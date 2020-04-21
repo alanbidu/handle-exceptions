@@ -1,5 +1,9 @@
 package model.entities;
 
+import model.exceptions.InvalidValue;
+import model.exceptions.InvalidWithdraw;
+import model.exceptions.NotEnoughBalance;
+
 public class Account {
 	
 	private int number;
@@ -7,9 +11,12 @@ public class Account {
 	private double balance;
 	private double withdrawLimit;
 	
-	public Account(int number, String holder, double balance, double withdrawLimit) {
+	public Account(int number, String holder, double balance, double withdrawLimit) throws InvalidValue {
 		this.number = number;
 		this.holder = holder;
+		if(balance < 0 || withdrawLimit < 0) {
+			throw new InvalidValue("Invalid value used!");
+		}
 		this.balance = balance;
 		this.withdrawLimit = withdrawLimit;
 	}
@@ -46,11 +53,22 @@ public class Account {
 		this.withdrawLimit = withdrawLimit;
 	}
 	
-	public void deposit(double amount) {
+	public void deposit(double amount) throws InvalidValue {
+		if(amount < 0) {
+			throw new InvalidValue("Invalid value used!");
+		}
 		this.balance += amount;
 	}
 		
-	public void withdraw(double amount) {
+	public void withdraw(double amount) throws InvalidValue, InvalidWithdraw, NotEnoughBalance {
+		if(amount < 0) {
+			throw new InvalidValue("Invalid value used!");
+		}
+		if(amount > withdrawLimit) {
+			throw new InvalidWithdraw("The amount exceeds withdraw limit");
+		}else if(amount > balance) {
+			throw new NotEnoughBalance("Not enough balance");
+		}
 		this.balance -= amount;
 	}
 }

@@ -23,7 +23,7 @@ public class Program {
 		System.out.print("Withdraw limit: ");
 		double withdrawLimit = sc.nextDouble();	
 		
-		
+		try {
 		Account account = new Account(accountNumber, holder, initialBalance, withdrawLimit);
 		
 		
@@ -32,7 +32,9 @@ public class Program {
 		account.withdraw(withdraw);
 		System.out.print("New balance: " + String.format("%.2f", account.getBalance()));
 		
-		
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		sc.close();
 	}
 
